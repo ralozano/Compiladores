@@ -1,17 +1,22 @@
 grammar Postfijo;
 
-prog: expr '\n';
+prog: expr+;
 
 expr: expr '+' term 
     | expr '-' term 
+    | ID '=' expr
     | term;
     
 term: term '*' factor 
-    | term '/' factor 
-    | factor;
+    | term '/' factor
+    | factor; 
     
-factor: INT 
+factor: INT  
+      | ID
       | '('expr')'; 
-    
-INT: [0-9]+ ;
+
+ID : LETRA+(DIGITO|LETRA)*;
+LETRA: [A-Za-z];
+INT: DIGITO+ ;
+DIGITO: [0-9];    
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines

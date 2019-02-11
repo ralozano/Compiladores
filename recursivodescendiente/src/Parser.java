@@ -7,7 +7,7 @@ import java.util.*;
  *  B -> + | *
  *  
  *  S -> aR
- *  R -> SB | epsilon
+ *  R -> SBR | epsilon
  *  B -> + | *
  *  
  */
@@ -49,8 +49,8 @@ public class Parser {
 		System.out.println("Entre a B");
 		switch (lookahead) {
 		case "+" :
-		{
 			match("+");
+		{
 			String b = pila.pop();
 			String a = pila.pop();
 			String c = "( " + a + " + " + b + " )"; 
@@ -58,8 +58,9 @@ public class Parser {
 		}   // accion semantica
 			break;
 		case "*" :
-		{
 			match("*");
+		{
+
 			String b = pila.pop();
 			String a = pila.pop();
 			String c = "( " + a + " * " + b + " )"; 

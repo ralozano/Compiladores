@@ -75,15 +75,10 @@ public class Parser {
 	}
 	
 	void match(String t) {
-		if (lookahead.equals("$"))
-			if (lookahead.equals(t))
-			     return;
-			else {
-				System.out.println("Syntax error");
-				System.exit(1);
-			}
-		if (lookahead.equals(t)) 		 
+		if (lookahead.equals(t)) {
+			if (!lookahead.contentEquals("$"))
 				lookahead = texto[siguiente++];
+		}
 		else {
 			System.out.println("Syntax error");
 			System.exit(1);

@@ -19,9 +19,8 @@ public class Lexer {
 		reserve(new Word(Tag.FALSE, "false"));
 	}
 
-	public Token scan() throws IOException {
-		/* salta espacios en blanco */
-		for (; peek == ' '; peek = (char) System.in.read()) {
+	private void saltaBlancos() throws IOException {
+		for (; peek == ' ' || peek == '\n'; peek = (char) System.in.read()) {
 			if (peek == ' ' || peek == '\t')
 				continue;
 			else if (peek == '\n')
@@ -29,7 +28,25 @@ public class Lexer {
 			else
 				break;
 		}
-
+	}
+	public Token scan() throws IOException {
+		/* salta espacios en blanco */
+		saltaBlancos();
+		
+		/* para comentario de una sola linea */
+		if (peek == '/') {
+			System.in.mark(1);
+			char peek2 = (char) System.in.read();
+			if (peek2 == '/') {
+				while (peek != '\n') {
+					peek = (char) System.in.read();
+				} 
+				saltaBlancos();
+			}
+			else 
+				System.in.reset();
+		}
+		
 		/* Para generar un entero */
 		if (Character.isDigit(peek)) {
 			int v = 0;
@@ -55,6 +72,37 @@ public class Lexer {
 			words.put(s, w);
 			return w;
 		}
+		if (peek == '<' || peek == '>' || peek == '!' || peek == '=') {
+			System.in.mark(1);
+			char peek2 = (char) System.in.read();
+			if (peek2 == '=') {
+				RelOper reloper = new RelOper(Tag.RELOPER, ""+ peek + peek2);
+				peek = ' ';
+				return reloper;
+			}
+			else {
+				System.in.reset();
+				if (peek != '=') {
+					RelOper reloper = new RelOper(Tag.RELOPER, ""+ peek);
+					peek = ' ';
+					return reloper;
+				}
+			}
+		}
+		
+			
+			
+			
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		Token t = new Token(peek);
 		peek = ' ';
 		return t;
